@@ -13,6 +13,9 @@ type Node struct {
 
 	position  vec.Position
 	direction vec.Vec2
+
+	avgDir vec.Vec2
+	count  int
 }
 
 func NewNode(parent *Node, p vec.Position, d vec.Vec2) Node {
@@ -21,5 +24,5 @@ func NewNode(parent *Node, p vec.Position, d vec.Vec2) Node {
 
 func (a *Node) Draw(screen *ebiten.Image) {
 	clr := color.RGBA{R: 255, G: 255, B: 0, A: 255}
-	vector.DrawFilledCircle(screen, a.position.X, a.position.Y, 4.0, clr, false)
+	vector.DrawFilledCircle(screen, a.position.X, a.position.Y, 1.0, clr, false)
 }

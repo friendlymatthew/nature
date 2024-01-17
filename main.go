@@ -24,7 +24,7 @@ func init() {
 }
 
 func (c *Canvas) Update() error {
-	//c.tree.Grow()
+	c.tree.Grow()
 
 	return nil
 }
@@ -42,7 +42,7 @@ func main() {
 
 	log.Println("Starting the game...")
 
-	attrCount := 100
+	attrCount := 400
 
 	c := &Canvas{
 		tree: botany.NewTree(attrCount, WIDTH, HEIGHT),

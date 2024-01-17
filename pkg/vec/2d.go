@@ -15,6 +15,29 @@ func NewPosition(x, y float32) Position {
 	}
 }
 
+// Euclidean Distance - assuming deltaX and deltaY are float32
+func (p1 *Position) Dist(p2 *Position) float32 {
+	deltaX := p1.X - p2.X
+	deltaY := p1.Y - p2.Y
+	return float32(math.Sqrt(float64(deltaX*deltaX + deltaY*deltaY)))
+}
+
+// Sub performs vector subtraction
+func (p1 *Position) Sub(p2 *Position) Vec2 {
+	return Vec2{
+		Dx: p1.X - p2.X,
+		Dy: p1.Y - p2.Y,
+	}
+}
+
+// Add
+func (p *Position) Add(v *Vec2) Position {
+	return Position{
+		X: p.X + v.Dx,
+		Y: p.Y + v.Dy,
+	}
+}
+
 // Vec2 represents a 2D vector in the simulation
 type Vec2 struct {
 	Dx, Dy float32
@@ -53,7 +76,7 @@ func (v1 *Vec2) Sub(v2 *Vec2) Vec2 {
 }
 
 // Norm normalizes the vector
-func (v *Vec2) Norm() Vec2 {
+func (v Vec2) Norm() Vec2 {
 	mag := v.Mag()
 
 	if mag > 0 {
