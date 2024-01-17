@@ -1,0 +1,62 @@
+package vec
+
+import (
+	"math"
+	"testing"
+)
+
+func TestVec2(t *testing.T) {
+
+	t.Run("Add", func(t *testing.T) {
+		v1 := Vec2{Dx: 1, Dy: 2}
+		v2 := Vec2{Dx: -3, Dy: 4}
+		result := v1.Add(&v2)
+		expected := Vec2{Dx: -2, Dy: 6}
+
+		if result != expected {
+			t.Errorf("Add was incorrect, got: %v, want: %v.", result, expected)
+		}
+	})
+
+	t.Run("Sub", func(t *testing.T) {
+		v1 := Vec2{Dx: 5, Dy: 6}
+		v2 := Vec2{Dx: 3, Dy: 2}
+		result := v1.Sub(&v2)
+		expected := Vec2{Dx: 2, Dy: 4}
+
+		if result != expected {
+			t.Errorf("Sub was incorrect, got: %v, want: %v.", result, expected)
+		}
+	})
+
+	t.Run("Dist", func(t *testing.T) {
+		v1 := Vec2{Dx: 0, Dy: 0}
+		v2 := Vec2{Dx: 3, Dy: 4}
+		result := v1.Dist(&v2)
+		expected := float32(5.0)
+
+		if result != expected {
+			t.Errorf("Dist was incorrect, got: %v, want: %v.", result, expected)
+		}
+	})
+
+	t.Run("Mag", func(t *testing.T) {
+		v := Vec2{Dx: 3, Dy: 4}
+		result := v.Mag()
+		expected := float32(5.0)
+
+		if result != expected {
+			t.Errorf("Magnitude was incorrect, got: %v, want: %v.", result, expected)
+		}
+	})
+
+	t.Run("Norm", func(t *testing.T) {
+		v := Vec2{Dx: 3, Dy: 4}
+		result := v.Norm()
+		expected := Vec2{Dx: 0.6, Dy: 0.8}
+
+		if math.Abs(float64(result.Dx-expected.Dx)) > 1e-9 || math.Abs(float64(result.Dy-expected.Dy)) > 1e-9 {
+			t.Errorf("Normalize was incorrect, got: %v, want: %v.", result, expected)
+		}
+	})
+}
