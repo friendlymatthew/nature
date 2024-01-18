@@ -8,8 +8,8 @@ import (
 )
 
 const (
-	attractionDistance float32 = 100.0
-	killDistance       float32 = 40.0
+	attractionDistance float32 = 60.0
+	killDistance       float32 = 10.0
 )
 
 type Tree struct {
@@ -37,6 +37,28 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 
 	nodes := []Node{root}
 
+	// initiation process
+
+	/*
+		iterate through attractors, if there are no matches, then we grab the last node and increase vertically
+	*/
+	growTrunk := true
+
+	lastNode := nodes[len(nodes)-1]
+
+	for growTrunk {
+		for _, attractor := range attractors {
+			if lastNode.position.Dist(&attractor.position) < attractionDistance {
+				growTrunk = false
+			} else {
+				newPos := vec.Position{X: lastNode.position.X, Y: lastNode.position.Y - 1}
+				newNode := NewNode(&lastNode, newPos, vec.NewVec2(0, -1))
+				nodes = append(nodes, newNode)
+				lastNode = newNode
+			}
+		}
+	}
+
 	return &Tree{
 		nodes:      nodes,
 		attractors: attractors,
@@ -46,39 +68,43 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 // http://algorithmicbotany.org/papers/colonization.egwnp2007.large.pdf
 func (t *Tree) Grow() {
 	if len(t.attractors) == 0 {
-		fmt.Println("END")
+		fmt.Println("DONE")
 	}
 
 	for i := range t.nodes {
 		t.nodes[i].avgDir = vec.Vec2{}
 		t.nodes[i].count = 0
+		fmt.Printf("Node %d reset\n", i)
 	}
 
-	for i, a := range t.attractors {
+	fmt.Println("Processing attractors...")
+	for i := len(t.attractors) - 1; i >= 0; i-- {
+		a := t.attractors[i]
+		fmt.Printf("Processing attractor %d\n", i)
 		closestNodeIndex := t.findClosestNode(a)
+		fmt.Printf("Closest node to attractor %d is %d\n", i, closestNodeIndex)
 
 		if closestNodeIndex == -1 {
-			lastNode := t.nodes[len(t.nodes)-1]
-			newPos := vec.Position{X: lastNode.position.X + 1, Y: lastNode.position.Y - 1}
-			newNode := NewNode(&lastNode, newPos, vec.NewVec2(1, -1))
-			t.nodes = append(t.nodes, newNode)
+			fmt.Printf("No close node found for attractor %d, skipping\n", i)
 			continue
 		}
 
 		cNode := &t.nodes[closestNodeIndex]
-		if cNode.position.Dist(&a.position) < killDistance {
-			// reached the end of the road
-			fmt.Printf("\npruning leaf %v\n", i)
+		dist := cNode.position.Dist(&a.position)
+		fmt.Printf("Distance to closest node: %v\n", dist)
+
+		if dist < killDistance {
+			fmt.Printf("Pruning leaf %d\n", i)
 			t.attractors = append(t.attractors[:i], t.attractors[i+1:]...)
-		} else if cNode.position.Dist(&a.position) < attractionDistance {
+		} else if dist < attractionDistance {
 			direction := a.position.Sub(&cNode.position)
 			cNode.avgDir = cNode.avgDir.Add(&direction)
 			cNode.count += 1
-			fmt.Printf("summing, new count is %v", cNode.count)
+			fmt.Printf("Attractor %d summing, new count is %v\n", i, cNode.count)
 		}
 	}
 
-	fmt.Printf("\nnodes left: %v\n", len(t.nodes))
+	fmt.Printf("Nodes left: %v\n", len(t.nodes))
 
 	// Create new nodes based on average direction
 	for _, n := range t.nodes {

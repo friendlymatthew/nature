@@ -42,7 +42,7 @@ func main() {
 
 	log.Println("Starting the game...")
 
-	attrCount := 400
+	attrCount := 300
 
 	c := &Canvas{
 		tree: botany.NewTree(attrCount, WIDTH, HEIGHT),
