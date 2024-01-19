@@ -15,8 +15,12 @@ type Attractor struct {
 }
 
 func NewAttractor(sW, sH float32) *Attractor {
-	x := rand.Float32() * sW
-	y := rand.Float32() * sH
+	marginWidth := float32(25)
+	marginHeightTop := float32(25)
+	marginHeightBottom := float32(50)
+
+	x := marginWidth + rand.Float32()*(sW-2*marginWidth)
+	y := marginHeightTop + rand.Float32()*(sH-marginHeightTop-marginHeightBottom)
 
 	p := vec.NewPosition(x, y)
 

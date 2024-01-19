@@ -1,13 +1,13 @@
 package main
 
 import (
+	"image/color"
 	"log"
 	"math/rand"
 	"time"
 
-	"github.com/hajimehoshi/ebiten/v2"
-
 	"github.com/friendlymatthew/nature/pkg/botany"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
@@ -30,8 +30,16 @@ func (c *Canvas) Update() error {
 }
 
 func (c *Canvas) Draw(screen *ebiten.Image) {
+	// Fill the entire window
+	screen.Fill(color.RGBA{255, 255, 255, 255})
 
-	c.tree.Draw(screen)
+	canvas := ebiten.NewImage(WIDTH, HEIGHT)
+
+	c.tree.Draw(canvas)
+
+	// Draw the canvas onto the screen at the offset position
+	opts := &ebiten.DrawImageOptions{}
+	screen.DrawImage(canvas, opts)
 }
 
 func (c *Canvas) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -42,7 +50,7 @@ func main() {
 
 	log.Println("Starting the game...")
 
-	attrCount := 300
+	attrCount := 200
 
 	c := &Canvas{
 		tree: botany.NewTree(attrCount, WIDTH, HEIGHT),

@@ -23,6 +23,9 @@ func NewNode(parent *Node, p vec.Position, d vec.Vec2) Node {
 }
 
 func (a *Node) Draw(screen *ebiten.Image) {
-	clr := color.RGBA{R: 255, G: 255, B: 0, A: 255}
-	vector.DrawFilledCircle(screen, a.position.X, a.position.Y, 1.0, clr, false)
+	// Set the color for the current node (fully opaque white in this case)
+	nodeColor := color.RGBA{R: 26, G: 26, B: 26, A: 255}
+
+	// Draw the current node as a filled circle
+	vector.DrawFilledCircle(screen, a.position.X, a.position.Y, 1.3, nodeColor, false)
 }

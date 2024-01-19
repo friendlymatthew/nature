@@ -69,6 +69,7 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 func (t *Tree) Grow() {
 	if len(t.attractors) == 0 {
 		fmt.Println("DONE")
+		return
 	}
 
 	for i := range t.nodes {
@@ -122,14 +123,12 @@ func (t *Tree) Grow() {
 			)
 
 			t.nodes = append(t.nodes, nn)
-			fmt.Println("adding")
-		} else {
-			fmt.Println("count none")
 		}
 	}
 }
 
 // Helper function to find the closest node to an attractor within attraction distance
+// todo -- implement a quadtree. Right now searching is O(n^2). WTS O(n*logn)
 func (t *Tree) findClosestNode(attractor Attractor) int {
 	var closestNodeIndex int = -1
 	minDist := attractionDistance
@@ -145,9 +144,11 @@ func (t *Tree) findClosestNode(attractor Attractor) int {
 }
 
 func (t *Tree) Draw(screen *ebiten.Image) {
-	for _, a := range t.attractors {
-		a.Draw(screen)
-	}
+	/*
+		for _, a := range t.attractors {
+			a.Draw(screen)
+		}
+	*/
 
 	for _, n := range t.nodes {
 		n.Draw(screen)
