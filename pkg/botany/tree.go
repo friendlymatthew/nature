@@ -144,11 +144,9 @@ func (t *Tree) findClosestNode(attractor Attractor) int {
 }
 
 func (t *Tree) Draw(screen *ebiten.Image) {
-	/*
-		for _, a := range t.attractors {
-			a.Draw(screen)
-		}
-	*/
+	for _, a := range t.attractors {
+		a.Draw(screen)
+	}
 
 	for _, n := range t.nodes {
 		n.Draw(screen)
