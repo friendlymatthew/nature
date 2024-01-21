@@ -2,8 +2,7 @@
 
 This program displays an open leaf venation model using the space colonization algorithm. Since I don't leave my room, might as well procedurally generate trees.
 
-### Pictures
-<img width="497" alt="Screen Shot 2024-01-18 at 4 53 00 PM" src="https://github.com/friendlymatthew/nature/assets/38759997/e746a9b0-0b28-4b10-ba9c-a08f82276932">
+![tree](https://github.com/friendlymatthew/nature/assets/38759997/7acd5af8-6967-41f9-be9d-8798d78af8b7)
 
 
 ### Libraries used + References
