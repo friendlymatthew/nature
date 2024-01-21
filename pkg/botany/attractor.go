@@ -2,7 +2,6 @@ package botany
 
 import (
 	"image/color"
-	"math/rand"
 
 	"github.com/friendlymatthew/nature/pkg/vec"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -14,13 +13,7 @@ type Attractor struct {
 	reached  bool
 }
 
-func NewAttractor(sW, sH float32) *Attractor {
-	marginWidth := float32(25)
-	marginHeightTop := float32(25)
-	marginHeightBottom := float32(50)
-
-	x := marginWidth + rand.Float32()*(sW-2*marginWidth)
-	y := marginHeightTop + rand.Float32()*(sH-marginHeightTop-marginHeightBottom)
+func NewAttractor(x, y float32) *Attractor {
 
 	p := vec.NewPosition(x, y)
 

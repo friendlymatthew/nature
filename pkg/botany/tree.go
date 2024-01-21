@@ -2,6 +2,7 @@ package botany
 
 import (
 	"fmt"
+	"math/rand"
 
 	"github.com/friendlymatthew/nature/pkg/vec"
 	"github.com/hajimehoshi/ebiten/v2"
@@ -10,6 +11,9 @@ import (
 const (
 	attractionDistance float32 = 60.0
 	killDistance       float32 = 10.0
+	marginWidth        float32 = 25
+	marginHeightTop    float32 = 25
+	marginHeightBottom float32 = 50
 )
 
 type Tree struct {
@@ -17,13 +21,22 @@ type Tree struct {
 	// a fancy term for leaves
 	attractors []Attractor
 	nodes      []Node
+	quadTree   Quad
+
+	IsDone bool
 }
 
 func NewTree(attrCount int, sW, sH float32) *Tree {
+
+	boundary := NewRectangle(vec.Position{X: 0, Y: 0}, vec.Position{X: sW, Y: sH})
+	quadTree := NewQuad(&boundary, 4)
+
 	attractors := make([]Attractor, attrCount)
 
 	for i := range attractors {
-		attractors[i] = *NewAttractor(sW, sH)
+		x := marginWidth + rand.Float32()*(sW-2*marginWidth)
+		y := marginHeightTop + rand.Float32()*(sH-marginHeightTop-marginHeightBottom)
+		attractors[i] = *NewAttractor(x, y)
 	}
 
 	root := NewNode(
@@ -38,10 +51,7 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 	nodes := []Node{root}
 
 	// initiation process
-
-	/*
-		iterate through attractors, if there are no matches, then we grab the last node and increase vertically
-	*/
+	// iterate through attractors, if there are no matches, then we grab the last node and increase vertically
 	growTrunk := true
 
 	lastNode := nodes[len(nodes)-1]
@@ -59,9 +69,16 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 		}
 	}
 
+	for _, node := range nodes {
+		quadTree.Insert(node)
+	}
+
 	return &Tree{
 		nodes:      nodes,
 		attractors: attractors,
+		quadTree:   *quadTree,
+
+		IsDone: false,
 	}
 }
 
@@ -69,6 +86,7 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 func (t *Tree) Grow() {
 	if len(t.attractors) == 0 {
 		fmt.Println("DONE")
+		t.IsDone = true
 		return
 	}
 
@@ -125,6 +143,7 @@ func (t *Tree) Grow() {
 			t.nodes = append(t.nodes, nn)
 		}
 	}
+
 }
 
 // Helper function to find the closest node to an attractor within attraction distance

@@ -13,10 +13,12 @@ import (
 const (
 	WIDTH  = 500
 	HEIGHT = 500
+	ATTR   = 200
 )
 
 type Canvas struct {
-	tree *botany.Tree
+	tree         *botany.Tree
+	treeDoneTime time.Time
 }
 
 func init() {
@@ -24,7 +26,18 @@ func init() {
 }
 
 func (c *Canvas) Update() error {
-	c.tree.Grow()
+	if !c.tree.IsDone {
+		c.tree.Grow()
+	} else {
+
+		if c.treeDoneTime.IsZero() {
+			c.treeDoneTime = time.Now()
+		} else if time.Since(c.treeDoneTime).Seconds() >= 2 {
+			// Tree is done, create a new one
+			c.tree = botany.NewTree(ATTR, WIDTH, HEIGHT)
+			c.treeDoneTime = time.Time{}
+		}
+	}
 
 	return nil
 }
@@ -48,18 +61,12 @@ func (c *Canvas) Layout(outsideWidth, outsideHeight int) (int, int) {
 
 func main() {
 
-	log.Println("Starting the game...")
-
-	attrCount := 200
-
 	c := &Canvas{
-		tree: botany.NewTree(attrCount, WIDTH, HEIGHT),
+		tree: botany.NewTree(ATTR, WIDTH, HEIGHT),
 	}
-	log.Printf("Initialized tree with %d attractors\n", attrCount)
 
 	ebiten.SetWindowSize(WIDTH, HEIGHT)
 	ebiten.SetWindowTitle("trees")
-	log.Println("Window setup complete. Running the game...")
 
 	if err := ebiten.RunGame(c); err != nil {
 		log.Fatal(err)

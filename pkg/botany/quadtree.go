@@ -93,3 +93,7 @@ func (q *Quad) subdivide() {
 	q.BottomLeft = NewQuad(&Rectangle{vec.Position{X: x - newWidth/2, Y: y + newHeight/2}, newWidth, newHeight}, q.Capacity)
 	q.BottomRight = NewQuad(&Rectangle{vec.Position{X: x + newWidth/2, Y: y + newHeight/2}, newWidth, newHeight}, q.Capacity)
 }
+
+// func (q *Quad) SearchClosest(attractor Attractor) *Node {
+// 	// Implement efficient search logic here
+// }
