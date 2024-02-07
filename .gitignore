@@ -1,0 +1,24 @@
+# General
+.DS_Store
+*.log
+*.tmp
+
+# C project specific
+ctree/**/*.o
+ctree/**/*.obj
+ctree/**/*.a
+ctree/**/*.so
+ctree/**/*.dylib
+ctree/**/*.dll
+ctree/**/*.dSYM/
+ctree/obj/
+
+## Binaries
+ctree/bin/*
+gotree/**/*.exe
+
+## Go modules
+go.sum
+
+## JetBrains IDEs
+.idea/

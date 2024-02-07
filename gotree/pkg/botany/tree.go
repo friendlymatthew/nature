@@ -5,13 +5,12 @@ import (
 	"math/rand"
 
 	"github.com/friendlymatthew/nature/pkg/vec"
-	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
 	attractionDistance float32 = 60.0
 	killDistance       float32 = 10.0
-	marginWidth        float32 = 25
+	marginWidth        float32 = 50
 	marginHeightTop    float32 = 25
 	marginHeightBottom float32 = 50
 )
@@ -21,7 +20,6 @@ type Tree struct {
 	// a fancy term for leaves
 	attractors []Attractor
 	nodes      []Node
-	quadTree   Quad
 
 	IsDone bool
 }
@@ -96,6 +94,7 @@ func (t *Tree) Grow() {
 		fmt.Printf("Node %d reset\n", i)
 	}
 
+	aCount := len(t.attractors)
 	fmt.Println("Processing attractors...")
 	for i := len(t.attractors) - 1; i >= 0; i-- {
 		a := t.attractors[i]
@@ -124,6 +123,9 @@ func (t *Tree) Grow() {
 	}
 
 	fmt.Printf("Nodes left: %v\n", len(t.nodes))
+	if len(t.attractors)-aCount == 0 {
+		fmt.Println("NO MORE!")
+	}
 
 	// Create new nodes based on average direction
 	for _, n := range t.nodes {
