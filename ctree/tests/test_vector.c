@@ -47,6 +47,90 @@ void test_translate() {
     }
 }
 
+void test_vector_addition() {
+    Vector v1 = { 4.0, 20.0, 23.0 };
+    Vector v2 = { 2.0, 20.0, 22.2 };
+    Vector v3 = { -10, 20, 0 };
+
+    Vector v1v2 = { 6, 40, 45.2 };
+    Vector v1v3 = { -6, 40, 23 };
+    Vector v2v3 = { -8, 40, 22.2 };
+
+    Vector results[] = { add_vectors(&v1, &v2), add_vectors(&v1, &v3), add_vectors(&v2, &v3) };
+    Vector expected[] = { v1v2, v1v3, v2v3 };
+
+    int count = sizeof(results) / sizeof(results[0]);
+
+    for (int idx = 0; idx <= count - 1; idx++) {
+        assert_test(expected[idx].dx, results[idx].dx, "dx");
+        assert_test(expected[idx].dy, results[idx].dy, "dy");
+        assert_test(expected[idx].dz, results[idx].dz, "dz");
+    }
+}
+
+
+void test_magnitude() {
+    Vector v1 = { 3, 4, 0 };
+    Vector v2 = { 0, 0, 5 };
+    Vector v3 = { 1, 2, 2 };
+    Vector v4 = { -1, -1, -1 };
+
+    double mag1 = 5;
+    double mag2 = 5;
+    double mag3 = 3;
+    double mag4 = sqrt(3);
+
+    double results[] = { magnitude(&v1), magnitude(&v2), magnitude(&v3), magnitude(&v4) };
+    double expected[] = { mag1, mag2, mag3, mag4 };
+
+    int count = sizeof(results) / sizeof(results[0]);
+
+    for (int idx = 0; idx <= count - 1; idx++) {
+        assert_test(expected[idx], results[idx], "mag");
+    }
+
+}
+
+void test_vector_normalize() {
+    Vector v1 = { 3.0, 4.0, 0.0 };
+    Vector v0 = { 0, 0, 0 };
+
+    Vector e1 = { 0.6, 0.8, 0.0 };
+    Vector e2 = { 0, 0, 0 };
+
+    Vector results[] = { normalize(&v1), normalize(&v0) };
+    Vector expected[] = { e1, e2 };
+
+    int count = sizeof(results) / sizeof(results[0]);
+
+    for (int idx = 0; idx <= count - 1; idx++) {
+        assert_test(expected[idx].dx, results[idx].dx, "Normalize dx");
+        assert_test(expected[idx].dy, results[idx].dy, "Normalize dy");
+        assert_test(expected[idx].dz, results[idx].dz, "Normalize dz");
+    }
+}
+
+
+void test_vector_divide() {
+    Vector v1 = { 10.0, -20.0, 30.0 };
+
+    double s1 = 2.0;
+    double s2 = 0;
+
+    Vector e1 = { 5.0, -10.0, 15.0 };
+    Vector e2 = { 0, 0, 0 };
+
+    Vector results[] = { divide(&v1, s1), divide(&v1, s2) };
+    Vector expected[] = { e1, e2 };
+
+    int count = sizeof(results) / sizeof(results[0]);
+
+    for (int idx = 0; idx <= count - 1; idx++) {
+         assert_test(expected[idx].dx, results[idx].dx, "Divide dx");
+         assert_test(expected[idx].dy, results[idx].dy, "Divide dy");
+         assert_test(expected[idx].dz, results[idx].dz, "Divide dz");
+    }
+}
 
 
 
@@ -55,7 +139,11 @@ int main() {
     printf("Running vector tests...\n");
     test_distance();
     test_translate();
-    // Add more tests as needed
+    test_vector_addition();
+    test_magnitude();
+    test_vector_normalize();
+    test_vector_divide();
+
     printf("Tests run: %d\n", tests_run);
     printf("Tests passed: %d\n", tests_passed);
 

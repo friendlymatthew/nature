@@ -11,10 +11,11 @@ This program displays an open leaf venation model using the space colonization a
 
 
 
-## `gotree`
+### `gotree`
 - Runs on [Ebitengine](https://github.com/hajimehoshi/ebiten), a simple 2D Go game engine
 
-
+<br>
+<br>
 > [!TIP]
 > 
 > No need to go outside. Just up your Vitamin D dosage! 
