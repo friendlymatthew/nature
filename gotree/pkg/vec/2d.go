@@ -47,13 +47,6 @@ func NewVec2(dx, dy float32) Vec2 {
 	return Vec2{Dx: dx, Dy: dy}
 }
 
-// Euclidean Distance - assuming deltaX and deltaY are float32
-func (v1 *Vec2) Dist(v2 *Vec2) float32 {
-	deltaX := v1.Dx - v2.Dx
-	deltaY := v1.Dy - v2.Dy
-	return float32(math.Sqrt(float64(deltaX*deltaX + deltaY*deltaY)))
-}
-
 // Vector Magnitude
 func (v *Vec2) Mag() float32 {
 	return float32(math.Sqrt(float64(v.Dx*v.Dx + v.Dy*v.Dy)))
@@ -64,14 +57,6 @@ func (v1 *Vec2) Add(v2 *Vec2) Vec2 {
 	return Vec2{
 		Dx: v1.Dx + v2.Dx,
 		Dy: v1.Dy + v2.Dy,
-	}
-}
-
-// Sub performs vector subtraction
-func (v1 *Vec2) Sub(v2 *Vec2) Vec2 {
-	return Vec2{
-		Dx: v1.Dx - v2.Dx,
-		Dy: v1.Dy - v2.Dy,
 	}
 }
 

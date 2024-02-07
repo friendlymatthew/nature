@@ -5,6 +5,7 @@ import (
 	"math/rand"
 
 	"github.com/friendlymatthew/nature/pkg/vec"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
@@ -25,9 +26,6 @@ type Tree struct {
 }
 
 func NewTree(attrCount int, sW, sH float32) *Tree {
-
-	boundary := NewRectangle(vec.Position{X: 0, Y: 0}, vec.Position{X: sW, Y: sH})
-	quadTree := NewQuad(&boundary, 4)
 
 	attractors := make([]Attractor, attrCount)
 
@@ -67,14 +65,9 @@ func NewTree(attrCount int, sW, sH float32) *Tree {
 		}
 	}
 
-	for _, node := range nodes {
-		quadTree.Insert(node)
-	}
-
 	return &Tree{
 		nodes:      nodes,
 		attractors: attractors,
-		quadTree:   *quadTree,
 
 		IsDone: false,
 	}
