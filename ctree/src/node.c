@@ -20,7 +20,7 @@ Node* create_node(Node* parent, Position* p, Vector* v) {
     if(v != NULL) {
         new_node->direction = *v;
     } else {
-        new_node->direction= (Vector){0, 0, 0};
+        new_node->direction= (Vector){0, 1, 0};
     }
 
     // zero inits
